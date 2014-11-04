@@ -1,21 +1,25 @@
 {
-    "author": "Jeff Griffiths (http://canuckistani.ca)",
-    "name": "whimsybot",
-    "description": "whimsybot",
-    "version": "0.1.1",
-    "homepage": "http://github.com/canuckistani/whimsybot",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/canuckistani/whimsybot"
-    },
-    "dependencies": {
-        "irc": "*",
-        "underscore": "*",
-        "request": "~2.21.0"
-    },
-    "devDependencies": {},
-    "optionalDependencies": {},
-    "engines": {
-        "node": "*"
-    }
+  "author": "Blake Winton <bwinton@latte.ca> (http://bwinton.latte.ca)"
+  "name": "whimsybot",
+  "description": "whimsybot",
+  "version": "0.1.1",
+  "homepage": "http://github.com/bwinton/whimsybot",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bwinton/whimsybot"
+  },
+  "contributors": [
+    "Jeff Griffiths (http://canuckistani.ca)"
+  ],
+  "dependencies": {
+    "irc": "*",
+    "underscore": "*",
+    "request": "~2.21.0",
+    "chalk": "~0.5.1"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
 }
