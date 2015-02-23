@@ -11,7 +11,7 @@ var handleMessage = function (from, to, message) {
     message = to;
     to = from;
   }
-  var reply;
+  var reply = "";
   var logMessage;
   if (/http.*\.gif/.test(message)) {
     logMessage = 'Got ';
@@ -20,7 +20,9 @@ var handleMessage = function (from, to, message) {
     }
     logMessage += 'gif from ' + chalk.blue.bold(from) + ': ' +
       message.replace(/^whimsybot:/, '').trim();
-    reply = 'Gif submitted.  Thanks!  :)';
+    if (from === to || /whimsybot/.test(message)) {
+      reply = 'Gif submitted.  Thanks!  :)';
+    }
   } else {
     reply = getWhimsy();
     if (from !== to) {
@@ -37,7 +39,7 @@ var handleMessage = function (from, to, message) {
 
 if (!module.parent) {
   var bot = new irc.Client('irc.mozilla.org', 'whimsybot', {
-    channels: ['#whimsy'],
+    channels: ['#whimsy', '#animatedgifs'],
     secure: true,
     port: 6697
   });
@@ -45,7 +47,9 @@ if (!module.parent) {
   bot.addListener('message', function(from, to, message) {
     if (to === 'whimsybot' && from !== 'whimsybot') {
       handleMessage(from, message);
-    } else if (/whimsybot/.test(message)) {
+    } else if (/http.*\.gif/.test(message)) {
+      handleMessage(from, to, message);
+    } else if (/^whimsybot: /.test(message)) {
       handleMessage(from, to, message);
     }
   });
