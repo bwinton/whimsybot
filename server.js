@@ -2,9 +2,20 @@
 
 var chalk = require('chalk');
 var etherpad = require('./lib/etherpad');
+var fs = require('fs');
 var irc = require('irc');
 
 var getWhimsy = etherpad.load('urlbar-sayings');
+var submitted = new Set();
+var GIF_FILE = '/Dropbox/Downloads/Whimsy/submitted_gifs.txt';
+var gifs = fs.readFileSync(GIF_FILE, {encoding: 'utf8'});
+for (var line of gifs.split('\n')) {
+  var index = line.indexOf(': ');
+  if (index != -1) {
+    submitted.add(line.slice(index+2).trim());
+  }
+}
+for (var item of submitted) console.log(item);
 
 var handleMessage = function (from, to, message) {
   if (!message) {
@@ -15,6 +26,10 @@ var handleMessage = function (from, to, message) {
   var logMessage;
   if (/http.*\.gif/.test(message)) {
     logMessage = 'Got ';
+    message = message.trim();
+    if (!submitted.has(message)) {
+      logMessage += chalk.red.bold('new ');
+    }
     if (from === to) {
       logMessage += 'private ';
     }
@@ -22,6 +37,14 @@ var handleMessage = function (from, to, message) {
       message.replace(/^whimsybot:/, '').trim();
     if (from === to || /whimsybot/.test(message)) {
       reply = 'Gif submitted.  Thanks!  :)';
+    }
+    if (!submitted.has(message)) {
+      fs.appendFile(GIF_FILE, from + ': ' + message + '\n', function (err) {
+        if (err) {
+          console.log('gif error: ', err);
+        }
+        submitted.add(message);
+      });
     }
   } else {
     reply = getWhimsy();
